@@ -42,4 +42,15 @@ export default function Login() {
         />
         <input
           type="password"
-          placeholder="Passwor
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button onClick={handleLogin}>Login</button>
+        <p>
+          Don’t have an account? <Link to="/register">Register</Link>
+        </p>
+      </div>
+    </div>
+  );
+}

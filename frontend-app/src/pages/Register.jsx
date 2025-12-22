@@ -38,16 +38,4 @@ export default function Register() {
           type="email"
           placeholder="Email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button onClick={handleRegister}>Create Account</button>
-      </div>
-    </div>
-  );
-}
+          onChange={(e) => setEmail(
