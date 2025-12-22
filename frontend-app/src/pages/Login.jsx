@@ -7,7 +7,7 @@ export default function Login() {
   const navigate = useNavigate()
 
   const handleLogin = async () => {
-    const res = await fetch('http://localhost:4000/auth/login', {
+    const res = await fetch('https://unit3-project.onrender.com/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

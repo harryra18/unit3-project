@@ -21,7 +21,7 @@ export default function Rides() {
 
   // GET rides for logged-in user only
   const fetchRides = async () => {
-    const res = await fetch('http://localhost:4000/rides', {
+    const res = await fetch('https://unit3-project.onrender.com/rides', {
       headers: {
         Authorization: `Bearer ${token}`
       }
@@ -32,7 +32,7 @@ export default function Rides() {
 
   // CREATE new ride
   const addRide = async () => {
-    await fetch('http://localhost:4000/rides', {
+    await fetch('https://unit3-project.onrender.com/rides', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

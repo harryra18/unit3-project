@@ -7,7 +7,7 @@ export default function Register() {
   const navigate = useNavigate()
 
   const handleRegister = async () => {
-    const res = await fetch('http://localhost:4000/auth/register', {
+    const res = await fetch('https://unit3-project.onrender.com/auth/register', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
