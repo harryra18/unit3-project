@@ -1,0 +1,54 @@
+const express = require('express')
+const Ride = require('../models/Ride')
+const verifyToken = require('../middleware/verifyToken')
+
+const router = express.Router()
+
+// GET all rides for logged-in user
+router.get('/', verifyToken, async (req, res) => {
+  const rides = await Ride.find({ user: req.userId }).sort({ date: -1 })
+  res.json(rides)
+})
+
+// CREATE new ride
+router.post('/', verifyToken, async (req, res) => {
+  const { date, miles, totalElevation, zone, averageBPM } = req.body
+
+  if (!miles || !averageBPM) {
+    return res.status(400).json({ message: 'Missing required fields' })
+  }
+
+  const ride = await Ride.create({
+    date,
+    miles,
+    totalElevation,
+    zone,
+    averageBPM,
+    user: req.userId
+  })
+
+  res.json(ride)
+})
+
+// UPDATE ride
+router.put('/:id', verifyToken, async (req, res) => {
+  const ride = await Ride.findOneAndUpdate(
+    { _id: req.params.id, user: req.userId },
+    req.body,
+    { new: true }
+  )
+
+  res.json(ride)
+})
+
+// DELETE ride
+router.delete('/:id', verifyToken, async (req, res) => {
+  await Ride.findOneAndDelete({
+    _id: req.params.id,
+    user: req.userId
+  })
+
+  res.json({ message: 'Ride deleted' })
+})
+
+module.exports = router
