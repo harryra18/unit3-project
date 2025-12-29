@@ -19,7 +19,7 @@ export default function Rides() {
   }, []);
 
   const fetchRides = async () => {
-    const res = await fetch("http://localhost:4000/rides", {
+    const res = await fetch("https://unit3-project.onrender.com/rides", {
       headers: { Authorization: `Bearer ${token}` }
     });
     const data = await res.json();
@@ -32,7 +32,7 @@ export default function Rides() {
       return;
     }
 
-    await fetch("http://localhost:4000/rides", {
+    await fetch("https://unit3-project.onrender.com/rides", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -89,4 +89,22 @@ export default function Rides() {
         <select value={zone} onChange={e => setZone(Number(e.target.value))}>
           <option value={1}>Zone 1</option>
           <option value={2}>Zone 2</option>
-          
+          <option value={3}>Zone 3</option>
+          <option value={4}>Zone 4</option>
+          <option value={5}>Zone 5</option>
+        </select>
+        <button onClick={addRide}>Save Ride</button>
+      </div>
+
+      <h3>Your Rides</h3>
+      {rides.length === 0 && <p>No rides logged yet.</p>}
+      {rides.map(ride => (
+        <div key={ride._id} className="ride-card">
+          <p>
+            {new Date(ride.date).toLocaleDateString()} — {ride.miles} miles — Zone {ride.zone} — Avg BPM {ride.averageBPM} — Elevation {ride.totalElevation} — User: {ride.user.email}
+          </p>
+        </div>
+      ))}
+    </div>
+  );
+}

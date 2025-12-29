@@ -8,7 +8,7 @@ export default function Register() {
 
   const handleRegister = async () => {
     try {
-      const res = await fetch("http://localhost:4000/auth/register", {
+      const res = await fetch("https://unit3-project.onrender.com/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password }),
@@ -38,4 +38,16 @@ export default function Register() {
           type="email"
           placeholder="Email"
           value={email}
-          onChange={(e) => setEmail(
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        <button onClick={handleRegister}>Create Account</button>
+      </div>
+    </div>
+  );
+}
