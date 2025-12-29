@@ -48,6 +48,4 @@ export default function Register() {
         />
         <button onClick={handleRegister}>Create Account</button>
       </div>
-    </div>
-  );
-}
+    <
