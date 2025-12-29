@@ -48,4 +48,11 @@ export default function Register() {
           placeholder="Password"
           value={password}
           onChange={e => setPassword(e.target.value)}
-   
+        />
+        <button onClick={handleRegister}>Create Account</button>
+        <p>Already have an account? <Link to="/">Login</Link></p>
+        <pre style={{ color: "red" }}>{debug}</pre>
+      </div>
+    </div>
+  );
+}

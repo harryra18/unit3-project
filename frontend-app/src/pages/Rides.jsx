@@ -8,7 +8,6 @@ export default function Rides() {
   const [totalElevation, setTotalElevation] = useState("");
   const [zone, setZone] = useState(1);
   const [avgBpm, setAvgBpm] = useState("");
-  const [debug, setDebug] = useState("");
   const [editingRideId, setEditingRideId] = useState(null);
 
   const navigate = useNavigate();
@@ -27,8 +26,7 @@ export default function Rides() {
       const data = await res.json();
       setRides(data);
     } catch (err) {
-      console.error(err);
-      setDebug("Network error fetching rides");
+      console.error("Network error fetching rides", err);
     }
   };
 
@@ -47,10 +45,9 @@ export default function Rides() {
     };
 
     try {
-      let res;
       if (editingRideId) {
         // UPDATE existing ride
-        res = await fetch(`https://unit3-project.onrender.com/rides/${editingRideId}`, {
+        await fetch(`https://unit3-project.onrender.com/rides/${editingRideId}`, {
           method: "PUT",
           headers: {
             "Content-Type": "application/json",
@@ -58,10 +55,10 @@ export default function Rides() {
           },
           body: JSON.stringify(rideData)
         });
-        setEditingRideId(null); // reset editing mode
+        setEditingRideId(null); // exit editing mode
       } else {
         // CREATE new ride
-        res = await fetch("https://unit3-project.onrender.com/rides", {
+        await fetch("https://unit3-project.onrender.com/rides", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -71,17 +68,11 @@ export default function Rides() {
         });
       }
 
-      if (!res.ok) {
-        setDebug("Failed to save ride");
-        return;
-      }
-
       // Clear form
       setDate(""); setMiles(""); setTotalElevation(""); setAvgBpm("");
       fetchRides();
     } catch (err) {
-      console.error(err);
-      setDebug("Network error saving ride");
+      console.error("Network error saving ride", err);
     }
   };
 
@@ -103,20 +94,14 @@ export default function Rides() {
     if (!window.confirm("Are you sure you want to delete this ride?")) return;
 
     try {
-      const res = await fetch(`https://unit3-project.onrender.com/rides/${id}`, {
+      await fetch(`https://unit3-project.onrender.com/rides/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` }
       });
 
-      if (!res.ok) {
-        setDebug("Failed to delete ride");
-        return;
-      }
-
       fetchRides();
     } catch (err) {
-      console.error(err);
-      setDebug("Network error deleting ride");
+      console.error("Network error deleting ride", err);
     }
   };
 
@@ -156,8 +141,6 @@ export default function Rides() {
             <button onClick={() => deleteRide(ride._id)}>Delete</button>
           </div>
         ))}
-
-        <pre style={{ color: "red" }}>{debug}</pre>
       </div>
     </div>
   );
