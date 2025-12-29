@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [debug, setDebug] = useState(""); 
+  const [debug, setDebug] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async () => {
@@ -18,18 +18,15 @@ export default function Login() {
       });
 
       if (!res.ok) {
-        const errData = await res.json();
-        setDebug(`Login failed: ${errData.message}`);
+        const err = await res.json();
+        setDebug(`Login failed: ${err.message}`);
         return;
       }
 
       const data = await res.json();
-      setDebug(`Login success! Token: ${data.token}`);
-
-      if (data.token) {
-        localStorage.setItem("token", data.token);
-        navigate("/rides");
-      }
+      localStorage.setItem("token", data.token);
+      setDebug("Login success!");
+      navigate("/rides");
     } catch (err) {
       console.error(err);
       setDebug("Network error or server is down");
@@ -40,28 +37,21 @@ export default function Login() {
     <div className="container">
       <div className="card">
         <h2>Login</h2>
-
         <input
           type="email"
           placeholder="Email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={e => setEmail(e.target.value)}
         />
         <input
           type="password"
           placeholder="Password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={e => setPassword(e.target.value)}
         />
-
         <button onClick={handleLogin}>Login</button>
-
-        <p>
-          Don’t have an account? <Link to="/register">Register</Link>
-        </p>
-
-        {/* Debug output */}
-        <pre style={{ marginTop: "15px", color: "red" }}>{debug}</pre>
+        <p>Don’t have an account? <Link to="/register">Register</Link></p>
+        <pre style={{ color: "red" }}>{debug}</pre>
       </div>
     </div>
   );
