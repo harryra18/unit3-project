@@ -116,4 +116,15 @@ export default function Rides() {
         {rides.length === 0 && <p>No rides logged yet.</p>}
 
         {rides.map(ride => (
-          <di
+          <div key={ride._id} className="ride-card">
+            <p>
+              {new Date(ride.date).toLocaleDateString()} — {ride.miles} miles —{" "}
+              Zone {ride.zone} — Avg BPM {ride.averageBPM} — Elevation{" "}
+              {ride.totalElevation} — User: {ride.user.email}
+            </p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}

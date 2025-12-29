@@ -4,7 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [debug, setDebug] = useState(""); // shows token / error
+  const [debug, setDebug] = useState(""); 
   const navigate = useNavigate();
 
   const handleLogin = async () => {
