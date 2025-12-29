@@ -1,29 +1,32 @@
-const express = require('express')
-const mongoose = require('mongoose')
-const cors = require('cors')
-require('dotenv').config()
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
+require('dotenv').config();
 
-const authRoutes = require('./routes/authRoutes')
-const rideRoutes = require('./routes/rideRoutes')
+const authRoutes = require('./routes/authRoutes');
+const rideRoutes = require('./routes/rideRoutes');
 
-const app = express()
+const app = express();
 
-// Middleware
-app.use(cors())
-app.use(express.json())
+app.use(cors({
+  origin: '*' 
+}));
+
+app.use(express.json());
+
+// log all requests for debugging
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url} BODY:`, req.body);
+  next();
+});
+
+// Health check route
+app.get('/', (req, res) => {
+  res.send('Server is running 🚴‍♂️');
+});
 
 // Routes
-app.use('/auth', authRoutes)
-app.use('/rides', rideRoutes)
+app.use('/auth', authRoutes);
+app.use('/rides', rideRoutes);
 
-// Database
 mongoose
-  .connect(process.env.MONGODB_URI)
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.error(err))
-
-// Server
-const PORT = process.env.PORT || 4000
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
-})
