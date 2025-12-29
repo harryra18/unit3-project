@@ -50,9 +50,4 @@ export default function Login() {
           onChange={e => setPassword(e.target.value)}
         />
         <button onClick={handleLogin}>Login</button>
-        <p>Don’t have an account? <Link to="/register">Register</Link></p>
-        <pre style={{ color: "red" }}>{debug}</pre>
-      </div>
-    </div>
-  );
-}
+        <p>Don’t have an account? <L
