@@ -12,6 +12,7 @@ router.get("/", verifyToken, async (req, res) => {
       .populate("user", "email"); // include email
     res.json(rides);
   } catch (err) {
+    console.error("GET RIDES ERROR:", err);
     res.status(500).json({ message: "Error fetching rides" });
   }
 });
@@ -19,7 +20,8 @@ router.get("/", verifyToken, async (req, res) => {
 // CREATE new ride
 router.post("/", verifyToken, async (req, res) => {
   const { date, miles, totalElevation, zone, averageBPM } = req.body;
-  if (!miles || !averageBPM) return res.status(400).json({ message: "Missing required fields" });
+  if (!miles || !averageBPM)
+    return res.status(400).json({ message: "Missing required fields" });
 
   try {
     const ride = await Ride.create({
@@ -32,20 +34,44 @@ router.post("/", verifyToken, async (req, res) => {
     });
     res.json(ride);
   } catch (err) {
+    console.error("CREATE RIDE ERROR:", err);
     res.status(500).json({ message: "Error creating ride" });
   }
 });
 
 // UPDATE ride
 router.put("/:id", verifyToken, async (req, res) => {
-  const ride = await Ride.findOneAndUpdate({ _id: req.params.id, user: req.userId }, req.body, { new: true });
-  res.json(ride);
+  try {
+    const ride = await Ride.findOneAndUpdate(
+      { _id: req.params.id, user: req.userId },
+      req.body,
+      { new: true }
+    );
+
+    if (!ride) return res.status(404).json({ message: "Ride not found" });
+
+    res.json(ride);
+  } catch (err) {
+    console.error("UPDATE RIDE ERROR:", err);
+    res.status(500).json({ message: "Error updating ride" });
+  }
 });
 
 // DELETE ride
 router.delete("/:id", verifyToken, async (req, res) => {
-  await Ride.findOneAndDelete({ _id: req.params.id, user: req.userId });
-  res.json({ message: "Ride deleted" });
+  try {
+    const ride = await Ride.findOneAndDelete({
+      _id: req.params.id,
+      user: req.userId
+    });
+
+    if (!ride) return res.status(404).json({ message: "Ride not found" });
+
+    res.json({ message: "Ride deleted" });
+  } catch (err) {
+    console.error("DELETE RIDE ERROR:", err);
+    res.status(500).json({ message: "Error deleting ride" });
+  }
 });
 
 module.exports = router;
